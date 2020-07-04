@@ -8,7 +8,6 @@ import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.ngoctm.cruddemo.entity.Employee;
 
@@ -19,7 +18,6 @@ public class EmployeeDAOImpl implements EmployeeDAO{
 	private EntityManager entityManager;
 	
 	@Override
-	@Transactional
 	public List<Employee> findAll() {
 		// TODO Auto-generated method stub
 		Session session = entityManager.unwrap(Session.class);
@@ -28,37 +26,50 @@ public class EmployeeDAOImpl implements EmployeeDAO{
 		
 		List<Employee> employees = query.getResultList();
 		
+		// using JPA
+		
+		//List<Employee> employees2 = entityManager.createQuery("from Employee", Employee.class).getResultList();
+		
 		return employees;
 		
 	}
 
 	@Override
-	@Transactional
 	public Employee findById(int id) {
 		// TODO Auto-generated method stub
 		Session session = entityManager.unwrap(Session.class);
 		
 		Employee employee = session.get(Employee.class, id);
 		
+		// using JPA
+		
+		//Employee employee2 = entityManager.find(Employee.class, id);
+		
 		return employee;
 	}
 
 	@Override
-	@Transactional
 	public void save(Employee employee) {
 		// TODO Auto-generated method stub
 		Session session = entityManager.unwrap(Session.class);
 		
 		session.saveOrUpdate(employee);
+		
+		// using JPA
+		
+		//Employee employee2 = entityManager.merge(employee);
+		
+		//employee.setId(employee2.getId());
 	}
 
 	@Override
-	@Transactional
 	public void delete(Employee employee) {
 		// TODO Auto-generated method stub
 		Session session = entityManager.unwrap(Session.class);
 		
 		session.delete(employee);
+		
+		//entityManager.remove(employee);
 	}
 
 }
